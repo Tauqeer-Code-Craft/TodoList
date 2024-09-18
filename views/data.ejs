@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titles %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Space Background */
+        body {
+            background: black;
+            overflow: hidden;
+            margin: 0;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Twinkling Stars */
+        .stars {
+            width: 100%;
+            height: 100%;
+            background: transparent url('https://www.transparenttextures.com/patterns/stardust.png');
+            animation: twinkle 2s infinite;
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            left: 0;
+        }
+
+        /* Moving Stars */
+        .moving-stars {
+            position: absolute;
+            width: 400%;
+            height: 400%;
+            background: transparent url('https://www.transparenttextures.com/patterns/stardust.png');
+            z-index: -2;
+            top: 0;
+            left: 0;
+            animation: move-stars 50s linear infinite;
+        }
+
+        /* Twinkling animation */
+        @keyframes twinkle {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        /* Moving stars animation */
+        @keyframes move-stars {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-1000px, -1000px); }
+        }
+
+        /* Styling for the content */
+        .container {
+            position: relative; /* Ensure container is above the background */
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.8); /* Slightly translucent background for better visibility */
+            padding: 20px;
+            border-radius: 1rem;
+        }
+    </style>
+</head>
+<body class="text-white min-h-screen flex items-center justify-center relative">
+    <!-- Moving Stars Background -->
+    <div class="moving-stars"></div>
+    <div class="stars"></div>
+
+    <!-- Data Display Container -->
+    <div class="container w-full max-w-md mx-auto">
+        <h1 class="text-4xl font-bold text-center mb-8 text-teal-400"><%= titles %></h1>
+
+        <div class="bg-gray-800 p-6 rounded-3xl shadow-2xl transform transition duration-500 hover:scale-105">
+            <!-- Display File Content -->
+            <pre class="whitespace-pre-wrap text-lg leading-relaxed bg-gray-700 p-4 rounded-xl text-white"><%= data %></pre>
+
+            <!-- Back to Main List Button -->
+            <div class="mt-6 text-center">
+                <a href="/" class="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded-xl transition duration-300">
+                    Back to To-Do List
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

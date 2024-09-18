@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Themed To-Do List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Space Background */
+        body {
+            background: black;
+            overflow: hidden;
+            margin: 0;
+            height: 100vh;
+            position: relative; /* Ensure the body is positioned relative */
+        }
+
+        /* Twinkling Stars */
+        .stars {
+            width: 100%;
+            height: 100%;
+            background: transparent url('https://www.transparenttextures.com/patterns/stardust.png');
+            animation: twinkle 2s infinite;
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            left: 0;
+        }
+
+        /* Moving Stars */
+        .moving-stars {
+            position: absolute;
+            width: 400%;
+            height: 400%;
+            background: transparent url('https://www.transparenttextures.com/patterns/stardust.png');
+            z-index: -2;
+            top: 0;
+            left: 0;
+            animation: move-stars 50s linear infinite;
+        }
+
+        /* Twinkling animation */
+        @keyframes twinkle {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        /* Moving stars animation */
+        @keyframes move-stars {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-1000px, -1000px); }
+        }
+
+        /* Styling for the To-Do List */
+        .container {
+            position: relative; /* Ensure container is above the background */
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.8); /* Slightly translucent background for better visibility */
+            padding: 20px;
+            border-radius: 1rem;
+        }
+    </style>
+</head>
+<body class="text-white min-h-screen flex items-center justify-center relative">
+    <!-- Moving Stars Background -->
+    <div class="moving-stars"></div>
+    <div class="stars"></div>
+
+    <!-- To-Do List Container -->
+    <div class="container w-full max-w-md mx-auto">
+        <h1 class="text-4xl font-bold text-center mb-8 text-teal-400">To-Do List</h1>
+
+        <div class="bg-gray-800 p-6 rounded-3xl shadow-2xl transform transition duration-500 hover:scale-105">
+            <!-- Input Form -->
+            <form action="/create" method="POST" class="mb-6">
+                <input
+                    type="text"
+                    name="titles"
+                    class="w-full p-3 bg-gray-700 border border-gray-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-teal-400"
+                    placeholder="Add a new task..."
+                    required
+                />
+                <textarea
+                    name="desc"
+                    class="w-full h-32 mt-3 p-3 bg-gray-700 border border-gray-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-teal-400"
+                    placeholder="Add a description..."
+                    required
+                ></textarea>
+                <button type="submit" class="mt-4 bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded-xl w-full transition duration-300">
+                    Add Task
+                </button>
+            </form>
+
+            <!-- Task List -->
+            <ul class="space-y-4">
+                <% if (files.length > 0) { %>
+                    <% files.forEach(function(val) { %>
+                        <li class="flex justify-between items-center p-4 bg-gray-700 rounded-xl shadow-md transition-transform transform hover:-translate-y-1 cursor-pointer" onclick="showwork('<%= val %>')">
+                            <span class="text-lg"><%= val %></span>
+                            
+                            <!-- Delete Task Form -->
+                            <form action="/delete" method="POST" class="ml-4">
+                                <input type="hidden" name="task" value="<%= val %>">
+                                <button type="submit" class="text-red-400 hover:text-red-600 transition duration-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </form>
+                        </li>
+                    <% }) %>
+                <% } else { %>
+                    <li class="text-center text-gray-400">No tasks yet...</li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function showwork(filename) {
+            window.location.href = `/data/${filename}`;
+        }
+    </script>
+</body>
+</html>
